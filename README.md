@@ -30,7 +30,7 @@ On peut alors faire le challenge ... il faut lire le contenu du fichier .passwor
 
 ## Mode conteneur en serveur ssh.
 
-Pour être dans ce mode on va changer un peu le conteneur pour qu'un serveur ssh
+Pour être dans ce mode on va changer un peu l'image pour qu'un serveur ssh
 soit lancé, et permettre à l'utilisateur **level01** de se connecter avec le mot de passe
 **mdpLevel01**.
 
