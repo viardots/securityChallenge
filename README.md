@@ -68,7 +68,7 @@ On démarre le conteneur en mode "démon" (**-d**) pour qu'il ne s'arrête pas, 
 redirige le port local **22222** vers **22**
 
 ```
-#docker run -d -p 22222:22 --rm --name conteneurChallengeSSH challengessh
+#docker run -d -p 22222:22 --name conteneurChallengeSSH challengessh
 ```
 
 Un conteneur est démarré
@@ -101,4 +101,10 @@ Il ne reste plus qu'à faire le challenge.
 
 ```bash
 docker stop conteneurChallengeSSH
+```
+
+et à le supprimer
+
+```bash
+docker rm conteneurChallengeSSH
 ```
