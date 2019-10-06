@@ -1,7 +1,7 @@
 # Copyright {2017} {Viardot Sebastien}
 # Pour créer l'image docker build . -t challenge
 # Image de base
-FROM debian:stable
+FROM debian:stretch
 # Auteur, inspiré de newbiecontest wargame level01
 MAINTAINER Sebastien Viardot <Sebastien.Viardot@grenoble-inp.fr>
 # Ajoute 2 utilisateurs dont level01 avec le mot de passe mdpLevel01
