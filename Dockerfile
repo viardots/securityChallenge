@@ -2,16 +2,17 @@
 # Pour créer l'image docker build . -t challenge
 # Image de base
 FROM debian:latest
+#FROM alpine:3.18.3
 # Auteur, inspiré de newbiecontest wargame level01
-MAINTAINER Sebastien Viardot <Sebastien.Viardot@grenoble-inp.fr>
+LABEL maintainer="Sebastien Viardot <Sebastien.Viardot@grenoble-inp.fr>"
+# Installe de quoi compiler le programme vulnérable et le serveur ssh
+RUN apt-get update && apt-get -y install gcc openssh-server libc-dev && rm -rf /var/lib/apt/lists/*
+# Version alternative avec alpine
+#RUN apk update && apk add --no-cache shadow bash gcc openssh-server libc-dev
 # Ajoute 2 utilisateurs dont level01 avec le mot de passe mdpLevel01
 RUN useradd -ms /bin/bash level01
 RUN echo 'level01:mdpLevel01' | chpasswd
 RUN useradd -ms /bin/bash level01priv
-# Installe de quoi compiler le programme vulnérable et le serveur ssh
-RUN apt-get update && \
-    apt-get -y install gcc openssh-server && \
-    rm -rf /var/lib/apt/lists/*
 RUN mkdir /var/run/sshd
 # Configure le compte level01 avec une commande permettant d'endosser l'identité de level01priv
 USER root
@@ -27,8 +28,11 @@ RUN echo "B@UTitmdp!" > .password && \
 # Démarre le container en level01 avec un shell (à décommenter)
 # A lancer avec
 # docker run -t -i --rm challenge
+HEALTHCHECK NONE
 USER level01
 CMD /bin/bash
 # Version avec un serveur ssh, lancer le container avec docker run -d -p 22222:22 --rm challenge
-#EXPOSE 22
-#CMD ["/usr/sbin/sshd", "-D"]
+# Lance le serveur via un script contenant l'initialisation des clés secrètes puis le lancement du serveur 
+# COPY startssh.sh /usr/bin/startssh.sh
+# EXPOSE 22
+# CMD startssh.sh

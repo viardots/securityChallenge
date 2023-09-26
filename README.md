@@ -108,3 +108,18 @@ et à le supprimer
 ```bash
 docker rm conteneurChallengeSSH
 ```
+
+## Vérification de la sécurité de l'image générée
+
+En utilisant [trivy](https://github.com/aquasecurity/trivy), il est possible de "scanner" l'image générée pour identifier les éventuels problèmes.
+
+```bash
+docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image challengessh
+```
+
+La distribution [alpine](https://www.alpinelinux.org/) est une distribution légère et orientée sécurité pour la construction de containers...
+
+1. Modifier le Dockerfile pour utiliser alpine plutôt que debian (la configuration est déjà présente)
+2. Construire l'image avec l'option `--no-cache` pour éviter de trainer les failles passées : `docker build --no-cache . -t secuchall`
+3. scanner de nouveau l'image avec trivy
+

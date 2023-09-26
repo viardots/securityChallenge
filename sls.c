@@ -9,6 +9,7 @@ int main(int argc, char ** argv)
           return -1;
   }
   strcat(cmd, argv[1]);
-  execl("/bin/sh","sh","-p","-c",cmd,0);
+  setreuid(geteuid(),geteuid());
+  system(cmd);
   return 0;
 }
