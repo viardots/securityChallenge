@@ -34,5 +34,6 @@ CMD /bin/bash
 # Version avec un serveur ssh, lancer le container avec docker run -d -p 22222:22 --rm challenge
 # Lance le serveur via un script contenant l'initialisation des clés secrètes puis le lancement du serveur 
 # COPY startssh.sh /usr/bin/startssh.sh
+# RUN chmod +x /usr/bin/startssh.sh
 # EXPOSE 22
-# CMD startssh.sh
+# CMD /usr/bin/startssh.sh
