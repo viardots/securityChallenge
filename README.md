@@ -45,7 +45,7 @@ Pour cela on modifie la fin du fichier [Dockerfile](Dockerfile) en commentant le
 #CMD /bin/bash
 # Version avec un serveur ssh, lancer le container avec docker run -d -p 22222:22 --rm challenge
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+CMD startssh.sh
 ```
 
 Créer la machine avec
@@ -120,6 +120,5 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image chal
 La distribution [alpine](https://www.alpinelinux.org/) est une distribution légère et orientée sécurité pour la construction de containers...
 
 1. Modifier le Dockerfile pour utiliser alpine plutôt que debian (la configuration est déjà présente)
-2. Construire l'image avec l'option `--no-cache` pour éviter de trainer les failles passées : `docker build --no-cache . -t secuchall`
+2. Construire l'image avec l'option `--no-cache` pour éviter de trainer les failles passées : `docker build --no-cache . -t challengesshtrivy`
 3. scanner de nouveau l'image avec trivy
-
