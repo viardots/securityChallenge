@@ -44,6 +44,7 @@ Pour cela on modifie la fin du fichier [Dockerfile](Dockerfile) en commentant le
 #USER level01
 #CMD /bin/bash
 # Version avec un serveur ssh, lancer le container avec docker run -d -p 22222:22 --rm challenge
+COPY startssh.sh /usr/bin/startssh.sh
 EXPOSE 22
 CMD startssh.sh
 ```
