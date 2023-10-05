@@ -5,10 +5,10 @@ FROM debian:latest
 #FROM alpine:3.18.3
 # Auteur, inspiré de newbiecontest wargame level01
 LABEL maintainer="Sebastien Viardot <Sebastien.Viardot@grenoble-inp.fr>"
-# Installe de quoi compiler le programme vulnérable et le serveur ssh
-RUN apt-get update && apt-get -y install gcc openssh-server libc-dev && rm -rf /var/lib/apt/lists/*
+# Installe de quoi compiler le programme vulnérable, le serveur ssh et curl
+RUN apt-get update && apt-get -y install gcc openssh-server libc-dev curl && rm -rf /var/lib/apt/lists/*
 # Version alternative avec alpine
-#RUN apk update && apk add --no-cache shadow bash gcc openssh-server libc-dev
+#RUN apk update && apk add --no-cache shadow bash gcc openssh-server libc-dev curl
 # Ajoute 2 utilisateurs dont level01 avec le mot de passe mdpLevel01
 RUN useradd -ms /bin/bash level01
 RUN echo 'level01:mdpLevel01' | chpasswd
