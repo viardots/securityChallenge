@@ -11,18 +11,24 @@ RUN apt-get update && apt-get -y install gcc openssh-server libc-dev curl && rm 
 #RUN apk update && apk add --no-cache shadow bash gcc openssh-server libc-dev curl
 # Ajoute 2 utilisateurs dont level01 avec le mot de passe mdpLevel01
 RUN useradd -ms /bin/bash level01
+# Version alternative avec alpine
+#RUN adduser -D -S /bin/bash level01
 RUN echo 'level01:mdpLevel01' | chpasswd
 RUN useradd -ms /bin/bash level01priv
+# Version alternative avec alpine
+#RUN adduser -D -S /bin/bash level01priv
 RUN mkdir /var/run/sshd
 # Configure le compte level01 avec une commande permettant d'endosser l'identité de level01priv
 USER root
 WORKDIR /home/level01
 RUN chmod 755 /home/level01
 COPY sls.c .
+# Avec alpine remplacer chown level01priv.level01priv par chown level01priv
 RUN /usr/bin/gcc sls.c -o sls && \
     chown level01priv.level01priv sls* && \
     chmod 4755 sls && chmod 444 sls.c
 # Crée le fichier .password avec des droits en lecture seule pour level01priv
+# Avec alpine remplacer chown level01priv.level01priv par chown level01priv
 RUN echo "B@UTitmdp!" > .password && \
     chown level01priv.level01priv .password &&\
     chmod 400 .password
