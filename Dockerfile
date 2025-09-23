@@ -17,6 +17,7 @@ RUN mkdir /var/run/sshd
 # Configure le compte level01 avec une commande permettant d'endosser l'identité de level01priv
 USER root
 WORKDIR /home/level01
+RUN chmod 755 /home/level01
 COPY sls.c .
 RUN /usr/bin/gcc sls.c -o sls && \
     chown level01priv.level01priv sls* && \
