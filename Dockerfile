@@ -12,11 +12,11 @@ RUN apt-get update && apt-get -y install gcc openssh-server libc-dev curl && rm 
 # Ajoute 2 utilisateurs dont level01 avec le mot de passe mdpLevel01
 RUN useradd -ms /bin/bash level01
 # Version alternative avec alpine
-#RUN adduser -D -S /bin/bash level01
+#RUN adduser -D -s /bin/bash level01
 RUN echo 'level01:mdpLevel01' | chpasswd
 RUN useradd -ms /bin/bash level01priv
 # Version alternative avec alpine
-#RUN adduser -D -S /bin/bash level01priv
+#RUN adduser -D -s /bin/bash level01priv
 RUN mkdir /var/run/sshd
 # Configure le compte level01 avec une commande permettant d'endosser l'identité de level01priv
 USER root
