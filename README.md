@@ -5,6 +5,9 @@ Récupérer les fichiers [Dockerfile](Dockerfile) et [sls.c](sls.c).
 
 ## Mode conteneur seul, challenge directement sur la machine.
 
+**Remarque** : Si vous avez podman d'installé sur votre machine et non docker, vous pouvez faire les mêmes expérimentations
+en remplaçant la commande `docker` par `podman`.
+
 Créer la machine avec
 
 ```bash
