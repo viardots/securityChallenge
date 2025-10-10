@@ -118,8 +118,17 @@ docker rm conteneurChallengeSSH
 
 En utilisant [trivy](https://github.com/aquasecurity/trivy), il est possible de "scanner" l'image générée pour identifier les éventuels problèmes.
 
+Avec docker voilà un moyen simple de le faire : 
+
 ```bash
 docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image challengessh
+```
+
+Avec podman 
+
+```bash
+podman save challengessh -o challengessh.tar # Ce qui permet de disposer d'une archive de l'image créée
+trivy image --input challengessh.tar
 ```
 
 La distribution [alpine](https://www.alpinelinux.org/) est une distribution légère et orientée sécurité pour la construction de containers...
