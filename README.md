@@ -1,43 +1,43 @@
 <!-- Copyright {2017} {Viardot Sebastien} -->
-# Exemple d'image Docker pour la création d'un challenge de sécurité
+# Exemple d'image Docker pour créer un challenge de sécurité
 
-Récupérer les fichiers [Dockerfile](Dockerfile) et [sls.c](sls.c).
+Ce dépôt contient un exemple simple de challenge de sécurité basé sur Docker.
 
-## Mode conteneur seul, challenge directement sur la machine.
+Récupérez les fichiers [Dockerfile](Dockerfile) et [sls.c](sls.c).
 
-**Remarque** : Si vous avez podman d'installé sur votre machine et non docker, vous pouvez faire les mêmes expérimentations
-en remplaçant la commande `docker` par `podman`.
+## Mode conteneur seul : challenge directement dans le conteneur
 
-Créer la machine avec
+**Remarque** : si vous avez `podman` installé sur votre machine au lieu de `docker`, vous pouvez faire les mêmes expérimentations en remplaçant la commande `docker` par `podman`.
+
+Construisez l'image avec :
 
 ```bash
 docker build . -t challenge
 ```
 
-On a à présent à notre disposition une image nommée **challenge**, pour faire le
-challenge.
+Vous disposez alors d'une image nommée **challenge** pour réaliser le challenge.
 ```bash
 docker images
 REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE
 challenge                      latest              3e8e6eb66c4e        7 seconds ago       307MB
 ```
 
-On crée ensuite un conteneur qui va lancer un shell avec l'utilisateur level01 (voir les 2 dernières lignes non commentées du [Dockerfile](Dockerfile))
+Créez ensuite un conteneur qui lance un shell avec l'utilisateur **level01** (voir les deux dernières lignes non commentées du [Dockerfile](Dockerfile)) :
 
 ```bash
 docker run -t -i --rm challenge
 level01@3009210a28f9:~$
 ```
 
-On peut alors faire le challenge ... il faut lire le contenu du fichier .password (un indice regarder les droits sur les fichiers et ce qu'ils font...)
+Vous pouvez alors faire le challenge : l'objectif est de lire le contenu du fichier `.password`.
 
-## Mode conteneur en serveur ssh.
+Indice : regardez les droits sur les fichiers et ce qu'ils font.
 
-Pour être dans ce mode on va changer un peu l'image pour qu'un serveur ssh
-soit lancé, et permettre à l'utilisateur **level01** de se connecter avec le mot de passe
-**mdpLevel01**.
+## Mode conteneur avec serveur SSH
 
-Pour cela on modifie la fin du fichier [Dockerfile](Dockerfile) en commentant le lancement d'un shell en tant qu'utilisateur **level01** et on décommente le lancement du serveur ssh en tant qu'administrateur (en commentant ```USER level01``` on reste ```USER root```)
+Pour utiliser ce mode, il faut modifier légèrement l'image afin de lancer un serveur SSH et permettre à l'utilisateur **level01** de se connecter avec le mot de passe **mdpLevel01**.
+
+Pour cela, modifiez la fin du fichier [Dockerfile](Dockerfile) en commentant le lancement d'un shell en tant qu'utilisateur **level01** et en décommentant le lancement du serveur SSH en tant qu'administrateur. En commentant `USER level01`, on reste en `USER root`.
 
 ```bash
 ...
@@ -53,14 +53,13 @@ EXPOSE 22
 CMD /usr/bin/startssh.sh
 ```
 
-Créer la machine avec
+Construisez ensuite l'image avec :
 
 ```bash
 docker build . -t challengessh
 ```
 
-On a à présent à notre disposition une image nommée **challengessh**, pour faire le
-challenge.
+Vous disposez alors d'une image nommée **challengessh** pour réaliser le challenge.
 
 ```bash
 docker images
@@ -69,14 +68,13 @@ challengessh                   latest              8e3b6626d8de        7 seconds
 challenge                      latest              3e8e6eb66c4e        7 hours ago         307MB
 ```
 
-On démarre le conteneur en mode "démon" (**-d**) pour qu'il ne s'arrête pas, et on
-redirige le port local **22222** vers **22**
+Démarrez le conteneur en mode « démon » (`-d`) pour qu'il reste actif, puis redirigez le port local **22222** vers le port **22** :
 
 ```bash
 docker run -d -p 22222:22 --name conteneurChallengeSSH challengessh
 ```
 
-Un conteneur est démarré
+Le conteneur est alors démarré :
 
 ```bash
 #docker ps
@@ -84,7 +82,7 @@ CONTAINER ID        IMAGE               COMMAND               CREATED           
 9fc2b87554f2        challengessh        "/usr/sbin/sshd -D"   4 minutes ago       Up 4 minutes        0.0.0.0:22222->22/tcp   conteneurChallengeSSH
 ```
 
-On peut alors se connecter sur le conteneur via ssh et faire le challenge
+Vous pouvez alors vous connecter au conteneur via SSH et faire le challenge :
 
 ```bash
 ssh -p 22222 level01@localhost
@@ -102,13 +100,13 @@ level01@9fc2b87554f2:~$
 
 Il ne reste plus qu'à faire le challenge.
 
-**Attention** Le conteneur reste démarré jusqu'à ce qu'on lui demande de s'arrêter
+**Attention** : le conteneur reste démarré jusqu'à ce que vous lui demandiez de s'arrêter :
 
 ```bash
 docker stop conteneurChallengeSSH
 ```
 
-et à le supprimer
+puis à le supprimer :
 
 ```bash
 docker rm conteneurChallengeSSH
@@ -116,23 +114,23 @@ docker rm conteneurChallengeSSH
 
 ## Vérification de la sécurité de l'image générée
 
-En utilisant [trivy](https://github.com/aquasecurity/trivy), il est possible de "scanner" l'image générée pour identifier les éventuels problèmes.
+En utilisant [trivy](https://github.com/aquasecurity/trivy), il est possible de scanner l'image générée pour identifier d'éventuels problèmes.
 
-Avec docker voilà un moyen simple de le faire : 
+Avec Docker, voici un moyen simple de le faire :
 
 ```bash
 docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image challengessh
 ```
 
-Avec podman 
+Avec Podman :
 
 ```bash
-podman save challengessh -o challengessh.tar # Ce qui permet de disposer d'une archive de l'image créée
+podman save challengessh -o challengessh.tar # Permet de disposer d'une archive de l'image créée
 trivy image --input challengessh.tar
 ```
 
-La distribution [alpine](https://www.alpinelinux.org/) est une distribution légère et orientée sécurité pour la construction de containers...
+La distribution [alpine](https://www.alpinelinux.org/) est légère et orientée sécurité pour la construction de conteneurs.
 
-1. Modifier le Dockerfile pour utiliser alpine plutôt que debian (la configuration est déjà présente)
-2. Construire l'image avec l'option `--no-cache` pour éviter de trainer les failles passées : `docker build --no-cache . -t challengesshtrivy`
-3. scanner de nouveau l'image avec trivy
+1. Modifiez le Dockerfile pour utiliser Alpine plutôt que Debian (la configuration est déjà présente).
+2. Construisez l'image avec l'option `--no-cache` pour éviter de conserver d'anciennes failles : `docker build --no-cache . -t challengesshtrivy`
+3. Scannez de nouveau l'image avec Trivy.
