@@ -1,7 +1,7 @@
 # Copyright {2023} {Viardot Sebastien}
 # Pour créer l'image docker build . -t challenge
 # Image de base
-FROM debian:11
+FROM debian:12
 #FROM alpine
 # Auteur, inspiré de newbiecontest wargame level01
 LABEL maintainer="Sebastien Viardot <Sebastien.Viardot@grenoble-inp.fr>"
