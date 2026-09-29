@@ -35,7 +35,7 @@ RUN echo "B@UTitmdp!" > .password && \
 # Démarre le container en level01 avec un shell (à décommenter)
 # A lancer avec
 # docker run -t -i --rm challenge
-HEALTHCHECK NONE
+# HEALTHCHECK NONE
 USER level01
 CMD /bin/bash
 # Version avec un serveur ssh, lancer le container avec docker run -d -p 22222:22 --rm challenge
