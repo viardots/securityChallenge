@@ -129,7 +129,7 @@ Avec podman
 ### Sur les machines de l'Ensimag pour installer temporairement trivy 
 
 ```bash 
-curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/usr/local/bin v0.50.4
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/usr/local/bin v0.74.0
 export PATH=~/usr/local/bin:$PATH
 ```
 
