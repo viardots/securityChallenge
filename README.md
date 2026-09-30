@@ -126,6 +126,13 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image chal
 
 Avec podman 
 
+### Sur les machines de l'Ensimag pour installer temporairement trivy 
+
+```bash 
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/usr/local/bin v0.50.4
+export PATH=~/usr/local/bin:$PATH
+```
+
 ```bash
 podman save challengessh -o challengessh.tar # Ce qui permet de disposer d'une archive de l'image créée
 trivy image --input challengessh.tar
